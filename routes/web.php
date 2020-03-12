@@ -18,6 +18,9 @@ Route::get('/', function () {
 });
 
 Route::resource('user', 'UserController');
+Route::resource('province', 'ProvincesController');
+Route::resource('city', 'CityController');
+Route::resource('area', 'AreaController');
 
 Auth::routes();
 

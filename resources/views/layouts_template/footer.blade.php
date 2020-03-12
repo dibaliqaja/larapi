@@ -46,6 +46,66 @@
         modal.find('.modal-body #email').val(email);
         modal.find('.modal-body #id').val(id);
     });
+
+    $('#editProvinceModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var province_name   = button.data('name');
+        var id     = button.data('id');
+        var modal  = $(this);
+
+        modal.find('.modal-body #province_name').val(province_name);
+        modal.find('.modal-body #id').val(id);
+    });
+
+    $('#showProvinceModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var province_name   = button.data('name');
+        var id     = button.data('id');
+        var modal  = $(this);
+
+        modal.find('.modal-body #province_name').val(province_name);
+        modal.find('.modal-body #id').val(id);
+    });
+
+    $('#editCityModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var city_name   = button.data('name');
+        var id     = button.data('id');
+        var modal  = $(this);
+
+        modal.find('.modal-body #city_name').val(city_name);
+        modal.find('.modal-body #id').val(id);
+    });
+
+    $('#showCityModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var city_name   = button.data('name');
+        var id     = button.data('id');
+        var modal  = $(this);
+
+        modal.find('.modal-body #city_name').val(city_name);
+        modal.find('.modal-body #id').val(id);
+    });
+
+    $('#editAreaModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var area_name   = button.data('name');
+        var id     = button.data('id');
+        var modal  = $(this);
+
+        modal.find('.modal-body #area_name').val(area_name);
+        modal.find('.modal-body #id').val(id);
+    });
+
+    $('#showAreaModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var area_name   = button.data('name');
+        var id     = button.data('id');
+        var modal  = $(this);
+
+        modal.find('.modal-body #area_name').val(area_name);
+        modal.find('.modal-body #id').val(id);
+    });
 </script>
 
 <!-- Template JS File -->

@@ -8,16 +8,16 @@
         </div>
         <ul class="sidebar-menu">
             <li>
-                <a class="nav-link" href="#"><i class="fas fa-fire"></i>
+                <a class="nav-link" href="{{ url('/') }}"><i class="fas fa-fire"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-database"></i><span>Data Master</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="#">List Province</a></li>
-                    <li><a class="nav-link" href="#">List City</a></li>
-                    <li><a class="nav-link" href="#">List Area</a></li>
+                    <li><a class="nav-link" href="{{ url('/province') }}">List Province</a></li>
+                    <li><a class="nav-link" href="{{ url('/city') }}">List City</a></li>
+                    <li><a class="nav-link" href="{{ url('/area') }}">List Area</a></li>
                 </ul>
             </li>
             <li>
@@ -26,7 +26,7 @@
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="blank.html"><i class="fas fa-history"></i>
+                <a class="nav-link" href="{{ url('/log') }}"><i class="fas fa-history"></i>
                     <span>Logs Activity</span>
                 </a>
             </li>

@@ -93,19 +93,6 @@ class UserController extends Controller
         $userNow['password'] = bcrypt($user['password']);
         $user->update($userNow);
         return redirect()->route('user.index')->with('success','User Updated');
-
-        // dd($request->all());
-
-
-        // $user_data = [
-        //     'name' => $request->name,
-        //     'email' => $request->email,
-        //     'password' => bcrypt($request->password),
-        // ];
-
-        // $user = User::findorfail($request->id);
-        // $user->update($user_data);
-
     }
 
     /**

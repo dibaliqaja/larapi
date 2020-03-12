@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Provinces;
+use App\Areas;
 use Illuminate\Http\Request;
 
-class ProvincesController extends Controller
+class AreaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +14,8 @@ class ProvincesController extends Controller
      */
     public function index()
     {
-        $province = Provinces::paginate(10);
-        return view('data_provinsi.index', compact('province'));
+        $area = Areas::paginate(10);
+        return view('data_area.index', compact('area'));
     }
 
     /**
@@ -25,7 +25,7 @@ class ProvincesController extends Controller
      */
     public function create()
     {
-        return view('data_provinsi.create');
+        return view('data_area.create');
     }
 
     /**
@@ -37,14 +37,14 @@ class ProvincesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'province_name'     => 'required|min:3|max:100'
+            'area_name'     => 'required|min:3|max:100'
         ]);
 
-        Provinces::create([
-            'province_name'     => $request->province_name,
+        Areas::create([
+            'area_name'     => $request->area_name,
         ]);
 
-        return redirect()->route('province.index')->with('success','Province Added');
+        return redirect()->route('area.index')->with('success','Area Added');
     }
 
     /**
@@ -76,15 +76,15 @@ class ProvincesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'province_name'     => 'required|min:3|max:100'
+            'area_name'     => 'required|min:3|max:100'
         ]);
 
-        $province = Provinces::findorfail($request->id);
-        $province->update($request->all());
-        return redirect()->route('province.index')->with('success','Province Updated');
+        $area = Areas::findorfail($request->id);
+        $area->update($request->all());
+        return redirect()->route('area.index')->with('success','Area Updated');
     }
 
     /**
@@ -95,9 +95,9 @@ class ProvincesController extends Controller
      */
     public function destroy($id)
     {
-        $province = Provinces::find($id);
-        $province->delete();
+        $area = Areas::find($id);
+        $area->delete();
 
-        return redirect()->back()->with('success','Province Deleted');
+        return redirect()->back()->with('success','Area Deleted');
     }
 }
