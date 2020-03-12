@@ -21,7 +21,7 @@
                 </ul>
             </li>
             <li>
-                <a class="nav-link" href="blank.html"><i class="fas fa-user"></i>
+                <a class="nav-link" href="{{ url('/user') }}"><i class="fas fa-user"></i>
                     <span>Data Admin</span>
                 </a>
             </li>

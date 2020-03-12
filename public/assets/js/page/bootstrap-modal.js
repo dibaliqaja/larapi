@@ -43,8 +43,8 @@ $("#modal-4").fireModal({
 });
 
 $("#modal-5").fireModal({
-  title: 'Login',
-  body: $("#modal-login-part"),
+  title: 'Edit Data',
+  body: $("#modal-register-part"),
   footerClass: 'bg-whitesmoke',
   autoFocus: false,
   onFormSubmit: function(modal, e, form) {
@@ -67,7 +67,7 @@ $("#modal-5").fireModal({
   },
   buttons: [
     {
-      text: 'Login',
+      text: 'Update',
       submit: true,
       class: 'btn btn-primary btn-shadow',
       handler: function(modal) {
