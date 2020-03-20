@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAreasTable extends Migration
+class AddLoginFieldsToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateAreasTable extends Migration
      */
     public function up()
     {
-        Schema::create('areas', function (Blueprint $table) {
-            $table->id();
-            $table->string('area_name');
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->datetime('last_login_at')->nullable();
+            $table->string('last_login_ip')->nullable();
         });
     }
 
@@ -27,6 +26,8 @@ class CreateAreasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('areas');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 }

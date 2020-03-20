@@ -13,6 +13,10 @@
     <form action="{{ route('province.store') }}" method="post">
         @csrf
         <div class="form-group">
+            <label for="">Province Code</label>
+            <input type="number" class="form-control" name="province_code">
+        </div>
+        <div class="form-group">
             <label for="">Province Name</label>
             <input type="text" class="form-control" name="province_name">
         </div>

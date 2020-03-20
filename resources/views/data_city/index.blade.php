@@ -1,5 +1,5 @@
 @extends('layouts_template.home')
-@section('title_page','Data Kota')
+@section('title_page','Cities Data')
 @section('content')
 
     @if (Session::has('success'))
@@ -28,7 +28,8 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Name Kota</th>
+                    <th>City Code</th>
+                    <th>City Name</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -36,12 +37,13 @@
                 @foreach ($city as $result => $hasil)
                 <tr>
                     <td>{{ $result + $city->firstitem() }}</td>
-                    <td><a href="#" data-id="{{ $hasil->id }}" data-name="{{ $hasil->city_name }}" data-toggle="modal" data-target="#showCityModal">{{ $hasil->city_name }}</a></td>
+                    <td>{{ $hasil->city_code }}</td>
+                    <td><a href="#" data-id="{{ $hasil->id }}" data-code="{{ $hasil->city_code }}" data-name="{{ $hasil->city_name }}" data-toggle="modal" data-target="#showCityModal">{{ $hasil->city_name }}</a></td>
                     <td>
                         <form action="{{ route('city.destroy', $hasil->id) }}" method="post">
                             @csrf
                             @method('delete')
-                            <button type="button" class="btn btn-primary" data-id="{{ $hasil->id }}" data-name="{{ $hasil->city_name }}" data-toggle="modal" data-target="#editCityModal">Edit</button>
+                            <button type="button" class="btn btn-primary" data-id="{{ $hasil->id }}" data-code="{{ $hasil->city_code }}" data-name="{{ $hasil->city_name }}" data-toggle="modal" data-target="#editCityModal">Edit</button>
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
@@ -72,7 +74,11 @@ aria-hidden="true">
                 <input type="text" class="form-control" name="id" id="id"  readonly>
             </div>
             <div class="form-group">
-                <label for="">Name</label>
+                <label for="">City Code</label>
+                <input type="number" class="form-control" name="city_name" id="city_code" readonly>
+            </div>
+            <div class="form-group">
+                <label for="">City Name</label>
                 <input type="text" class="form-control" name="city_name" id="city_name" readonly>
             </div>
         </div>
@@ -98,7 +104,20 @@ aria-hidden="true">
             @method('patch')
             <input type="hidden" name="id" id="id" value="{{ $hasil->id }}">
             <div class="form-group">
-                <label for="">Name</label>
+                <label for="">Province Name</label>
+                <select class="form-control select2" name="province_code" id="">
+                    <option value="" holder>Select Province</option>
+                    @foreach ($provinces as $result)
+                        <option value="{{ $result->province_code }}">{{ $result->province_name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="">City Code</label>
+                <input type="number" class="form-control" name="city_code" id="city_code" required>
+            </div>
+            <div class="form-group">
+                <label for="">City Name</label>
                 <input type="text" class="form-control" name="city_name" id="city_name" required>
             </div>
         </div>

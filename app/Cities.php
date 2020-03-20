@@ -3,8 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Cities extends Model
 {
-    protected $fillable = ['city_name'];
+    use LogsActivity;
+
+    protected $fillable = ['province_code','city_code','city_name'];
+
+    protected static $logAttributes = ['province_code','city_code','city_name'];
 }

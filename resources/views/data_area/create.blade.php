@@ -13,6 +13,28 @@
     <form action="{{ route('area.store') }}" method="post">
         @csrf
         <div class="form-group">
+            <label for="">Province Name</label>
+            <select class="form-control select2" name="province_code" id="">
+                <option value="" holder>Select Province</option>
+                @foreach ($provinces as $result)
+                    <option value="{{ $result->province_code }}">{{ $result->province_name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="">City Name</label>
+            <select class="form-control select2" name="city_code" id="">
+                <option value="" holder>Select City</option>
+                @foreach ($cities as $result)
+                    <option value="{{ $result->city_code }}">{{ $result->city_name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="">Area Code</label>
+            <input type="number" class="form-control" name="area_code">
+        </div>
+        <div class="form-group">
             <label for="">Area Name</label>
             <input type="text" class="form-control" name="area_name">
         </div>

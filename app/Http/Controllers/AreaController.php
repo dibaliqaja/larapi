@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Areas;
+use App\Cities;
+use App\Provinces;
 use Illuminate\Http\Request;
 
 class AreaController extends Controller
@@ -15,7 +17,9 @@ class AreaController extends Controller
     public function index()
     {
         $area = Areas::paginate(10);
-        return view('data_area.index', compact('area'));
+        $provinces = Provinces::all();
+        $cities = Cities::all();
+        return view('data_area.index', compact('area','provinces','cities'));
     }
 
     /**
@@ -25,7 +29,9 @@ class AreaController extends Controller
      */
     public function create()
     {
-        return view('data_area.create');
+        $provinces = Provinces::all();
+        $cities = Cities::all();
+        return view('data_area.create', compact('provinces','cities'));
     }
 
     /**
@@ -37,10 +43,16 @@ class AreaController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'province_code'   => 'required',
+            'city_code'       => 'required',
+            'area_code'     => 'required',
             'area_name'     => 'required|min:3|max:100'
         ]);
 
         Areas::create([
+            'province_code'  => $request->province_code,
+            'city_code'     => $request->city_code,
+            'area_code'     => $request->area_code,
             'area_name'     => $request->area_name,
         ]);
 
@@ -79,6 +91,9 @@ class AreaController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
+            'province_code'   => 'required',
+            'city_code'       => 'required',
+            'area_code'     => 'required',
             'area_name'     => 'required|min:3|max:100'
         ]);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cities;
+use App\Provinces;
 use Illuminate\Http\Request;
 
 class CityController extends Controller
@@ -15,7 +16,8 @@ class CityController extends Controller
     public function index()
     {
         $city = Cities::paginate(10);
-        return view('data_city.index', compact('city'));
+        $provinces = Provinces::all();
+        return view('data_city.index', compact('city','provinces'));
     }
 
     /**
@@ -25,7 +27,8 @@ class CityController extends Controller
      */
     public function create()
     {
-        return view('data_city.create');
+        $provinces = Provinces::all();
+        return view('data_city.create', compact('provinces'));
     }
 
     /**
@@ -37,10 +40,14 @@ class CityController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'province_code'     => 'required',
+            'city_code'     => 'required',
             'city_name'     => 'required|min:3|max:100'
         ]);
 
         Cities::create([
+            'province_code'   => $request->province_id,
+            'city_code'     => $request->city_code,
             'city_name'     => $request->city_name,
         ]);
 
@@ -79,6 +86,8 @@ class CityController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
+            'province_code'   => 'required',
+            'city_code'     => 'required',
             'city_name'     => 'required|min:3|max:100'
         ]);
 

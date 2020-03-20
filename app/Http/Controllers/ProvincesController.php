@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Provinces;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProvincesController extends Controller
 {
@@ -37,10 +38,12 @@ class ProvincesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'province_code'     => 'required',
             'province_name'     => 'required|min:3|max:100'
         ]);
 
         Provinces::create([
+            'province_code'     => $request->province_code,
             'province_name'     => $request->province_name,
         ]);
 
@@ -79,6 +82,7 @@ class ProvincesController extends Controller
     public function update(Request $request)
     {
         $this->validate($request, [
+            'province_code'     => 'required',
             'province_name'     => 'required|min:3|max:100'
         ]);
 

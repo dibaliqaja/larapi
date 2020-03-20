@@ -12,15 +12,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
-        $faker = Faker::create('id_ID');
-    	for($i = 1; $i <= 5; $i++){
-    		DB::table('cities')->insert([
-    			'city_name' => $faker->city,
-            ]);
-            DB::table('areas')->insert([
-    			'area_name' => $faker->city,
-    		]);
-        }
+    	DB::table('provinces')->insert([
+            'province_code' => 35,
+    	    'province_name' => 'Jawa Timur',
+        ]);
+
+        DB::table('cities')->insert([
+            'province_code' => 35,
+            'city_code' => 1,
+    	    'city_name' => 'Pacitan',
+        ]);
+
+        DB::table('areas')->insert([
+            'province_code' => 35,
+            'city_code' => 1,
+            'area_code' => 1,
+    	    'area_name' => 'Area Pacitan 1',
+        ]);
     }
 }

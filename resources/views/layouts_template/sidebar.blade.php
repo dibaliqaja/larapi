@@ -26,7 +26,7 @@
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="{{ url('/log') }}"><i class="fas fa-history"></i>
+                <a class="nav-link" href="{{ url('/logs') }}"><i class="fas fa-history"></i>
                     <span>Logs Activity</span>
                 </a>
             </li>

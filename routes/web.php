@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Spatie\Activitylog\Models\Activity;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +18,15 @@ Route::get('/', function () {
     return view('dashboard');
 });
 
-Route::resource('user', 'UserController');
-Route::resource('province', 'ProvincesController');
-Route::resource('city', 'CityController');
-Route::resource('area', 'AreaController');
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('user', 'UserController');
+    Route::resource('province', 'ProvincesController');
+    Route::resource('city', 'CityController');
+    Route::resource('area', 'AreaController');
+    Route::get('/logs', function () {
+        return Activity::orderBy('updated_at', 'DESC')->get();
+    });
+});
 
 Auth::routes();
 

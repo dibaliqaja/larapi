@@ -1,5 +1,5 @@
 @extends('layouts_template.home')
-@section('title_page','Data Provinsi')
+@section('title_page','Provinces Data')
 @section('content')
 
     @if (Session::has('success'))
@@ -28,7 +28,8 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>Name Provinsi</th>
+                    <th>Province Code</th>
+                    <th>Province Name</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -36,12 +37,13 @@
                 @foreach ($province as $result => $hasil)
                 <tr>
                     <td>{{ $result + $province->firstitem() }}</td>
-                    <td><a href="#" data-id="{{ $hasil->id }}" data-name="{{ $hasil->province_name }}" data-toggle="modal" data-target="#showProvinceModal">{{ $hasil->province_name }}</a></td>
+                    <td>{{ $hasil->province_code }}</td>
+                    <td><a href="#" data-id="{{ $hasil->id }}" data-code="{{ $hasil->province_code }}" data-name="{{ $hasil->province_name }}" data-toggle="modal" data-target="#showProvinceModal">{{ $hasil->province_name }}</a></td>
                     <td>
                         <form action="{{ route('province.destroy', $hasil->id) }}" method="post">
                             @csrf
                             @method('delete')
-                            <button type="button" class="btn btn-primary" data-id="{{ $hasil->id }}" data-name="{{ $hasil->province_name }}" data-toggle="modal" data-target="#editProvinceModal">Edit</button>
+                            <button type="button" class="btn btn-primary" data-id="{{ $hasil->id }}" data-code="{{ $hasil->province_code }}" data-name="{{ $hasil->province_name }}" data-toggle="modal" data-target="#editProvinceModal">Edit</button>
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
@@ -49,7 +51,6 @@
                 @endforeach
             </tbody>
         </table>
-
         {{ $province->links() }}
 
 @endsection
@@ -72,7 +73,11 @@ aria-hidden="true">
                 <input type="text" class="form-control" name="id" id="id"  readonly>
             </div>
             <div class="form-group">
-                <label for="">Name</label>
+                <label for="">Province Code</label>
+                <input type="number" class="form-control" name="province_code" id="province_code" readonly>
+            </div>
+            <div class="form-group">
+                <label for="">Province Name</label>
                 <input type="text" class="form-control" name="province_name" id="province_name" readonly>
             </div>
         </div>
@@ -98,7 +103,11 @@ aria-hidden="true">
             @method('patch')
             <input type="hidden" name="id" id="id" value="{{ $hasil->id }}">
             <div class="form-group">
-                <label for="">Name</label>
+                <label for="">Province Code</label>
+                <input type="number" class="form-control" name="province_code" id="province_code" required>
+            </div>
+            <div class="form-group">
+                <label for="">Province Name</label>
                 <input type="text" class="form-control" name="province_name" id="province_name" required>
             </div>
         </div>
