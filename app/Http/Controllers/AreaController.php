@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LogActivity;
 use App\Areas;
 use App\Cities;
 use App\Provinces;
@@ -56,6 +57,7 @@ class AreaController extends Controller
             'area_name'     => $request->area_name,
         ]);
 
+        LogActivity::addToLog('Area Added');
         return redirect()->route('area.index')->with('success','Area Added');
     }
 
@@ -99,6 +101,8 @@ class AreaController extends Controller
 
         $area = Areas::findorfail($request->id);
         $area->update($request->all());
+
+        LogActivity::addToLog('Area Updated');
         return redirect()->route('area.index')->with('success','Area Updated');
     }
 
@@ -113,6 +117,7 @@ class AreaController extends Controller
         $area = Areas::find($id);
         $area->delete();
 
+        LogActivity::addToLog('Area Deleted');
         return redirect()->back()->with('success','Area Deleted');
     }
 }

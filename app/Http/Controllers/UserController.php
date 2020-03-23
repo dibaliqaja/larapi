@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Helpers\LogActivity;
 
 class UserController extends Controller
 {
@@ -48,6 +49,7 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
+        LogActivity::addToLog('User Added');
         return redirect()->route('user.index')->with('success','User Added');
     }
 
@@ -92,6 +94,8 @@ class UserController extends Controller
         $userNow = $request->all();
         $userNow['password'] = bcrypt($user['password']);
         $user->update($userNow);
+
+        LogActivity::addToLog('User Updated');
         return redirect()->route('user.index')->with('success','User Updated');
     }
 
@@ -106,6 +110,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->delete();
 
+        LogActivity::addToLog('User Deleted');
         return redirect()->back()->with('success','User Deleted');
     }
 }

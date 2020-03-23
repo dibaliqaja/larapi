@@ -23,9 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('province', 'ProvincesController');
     Route::resource('city', 'CityController');
     Route::resource('area', 'AreaController');
-    Route::get('/logs', function () {
-        return Activity::orderBy('updated_at', 'DESC')->get();
-    });
+    Route::get('logs', 'LogsController@index')->name('logs-index');
+    Route::get('list-cities/{idprovince}', 'LogsController@listCities')->name('list-cities');
 });
 
 Auth::routes();

@@ -104,8 +104,8 @@ aria-hidden="true">
             @method('patch')
             <input type="hidden" name="id" id="id" value="{{ $hasil->id }}">
             <div class="form-group">
-                <label for="">Province Name</label>
-                <select class="form-control select2" name="province_code" id="">
+                <label for="">Province Name</label><br>
+                <select class="form-control select" name="province_code">
                     <option value="" holder>Select Province</option>
                     @foreach ($provinces as $result)
                         <option value="{{ $result->province_code }}">{{ $result->province_name }}</option>

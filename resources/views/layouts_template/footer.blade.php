@@ -18,6 +18,7 @@
 <script src="{{ asset('assets/modules/nicescroll/jquery.nicescroll.min.js') }}"></script>
 <script src="{{ asset('assets/modules/moment.min.js') }}"></script>
 <script src="{{ asset('assets/js/stisla.js') }}"></script>
+<script src="{{ asset('assets/modules/select2/dist/js/select2.full.min.js') }}"></script>
 
 <!-- JS Libraies -->
 
@@ -117,6 +118,37 @@
         modal.find('.modal-body #area_code').val(area_code);
         modal.find('.modal-body #area_name').val(area_name);
         modal.find('.modal-body #id').val(id);
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $("#province").change(function() {
+            var provid = $("#province").val();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                if(provid){
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/list-cities/' + provid,
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data)
+                        $("#city").empty();
+                        $("#city").append("<option value=''>Select City</option>");
+                        for (let i = 0; i < data.length; i++) {
+                            $("#city").append("<option value=" + data[i].city_code + ">" + data[i].city_name + "</option>");
+                        }
+                    },
+                    error: function(data) {
+                        console.log(data);
+                    }
+                });
+            }
+        });
     });
 </script>
 

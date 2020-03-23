@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -53,5 +54,7 @@ class LoginController extends Controller
             'last_login_at' => Carbon::now()->toDateTimeString(),
             'last_login_ip' => $request->getClientIp()
         ]);
+
+        LogActivity::addToLog('User Login');
     }
 }

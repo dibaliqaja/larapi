@@ -5,85 +5,94 @@ namespace App\Http\Controllers;
 use JWTAuth;
 use App\User;
 use Illuminate\Http\Request;
-use App\Http\Requests\RegisterAuthRequest;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Symfony\Component\HttpFoundation\Response;
 use App\Provinces;
 use App\Cities;
 use App\Areas;
+use App\Helpers\LogActivity;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use \Validator;
 
 class ApiController extends Controller
 {
-    // public $loginAfterSignUp = true;
+    public function logout(Request $request)
+    {
+        $this->validate($request, [
+            'token' => 'required'
+        ]);
 
-    // public function register(RegisterAuthRequest $request)
-    // {
-    //     $user = new User();
-    //     $user->name = $request->name;
-    //     $user->email = $request->email;
-    //     $user->password = bcrypt($request->password);
-    //     $user->save();
+        try {
+            JWTAuth::invalidate($request->token);
 
-    //     if ($this->loginAfterSignUp) {
-    //         return $this->login($request);
-    //     }
+            return response()->json([
+                'success' => true,
+                'message' => 'User logged out successfully'
+            ]);
+            LogActivity::addToLog('User logged out');
+        } catch (JWTException $exception) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sorry, the user cannot be logged out'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
 
-    //     return response()->json([
-    //         'success' => true,
-    //         'data' => $user
-    //     ], Response::HTTP_OK);
-    // }
+    public function login(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
+        try {
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'invalid_credentials'], 400);
+            }
+        } catch (JWTException $e) {
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+        LogActivity::addToLog('User login');
+        return response()->json(compact('token'));
+    }
 
-    // public function login(Request $request)
-    // {
-    //     $input = $request->only('email', 'password');
-    //     $jwt_token = null;
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+        $user = User::create([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'password' => Hash::make($request->get('password')),
+        ]);
+        $token = JWTAuth::fromUser($user);
+        LogActivity::addToLog('Registered New User');
+        return response()->json(compact('user','token'),201);
+    }
 
-    //     if (!$jwt_token = JWTAuth::attempt($input)) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Invalid Email or Password',
-    //         ], Response::HTTP_UNAUTHORIZED);
-    //     }
+    public function getAuthenticatedUser()
+    {
+        try {
+            if (! $user = JWTAuth::parseToken()->authenticate()) {
+                return response()->json(['user_not_found'], 404);
+            }
+        } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+            return response()->json(['token_expired'], $e->getStatusCode());
+        } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+            return response()->json(['token_invalid'], $e->getStatusCode());
+        } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+            return response()->json(['token_absent'], $e->getStatusCode());
+        }
+        return response()->json(compact('user'));
+    }
 
-    //     return response()->json([
-    //         'success' => true,
-    //         'token' => $jwt_token,
-    //     ]);
-    // }
-
-    // public function logout(Request $request)
-    // {
-    //     $this->validate($request, [
-    //         'token' => 'required'
-    //     ]);
-
-    //     try {
-    //         JWTAuth::invalidate($request->token);
-
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'User logged out successfully'
-    //         ]);
-    //     } catch (JWTException $exception) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Sorry, the user cannot be logged out'
-    //         ], Response::HTTP_INTERNAL_SERVER_ERROR);
-    //     }
-    // }
-
-    // public function getAuthUser(Request $request)
-    // {
-    //     $this->validate($request, [
-    //         'token' => 'required'
-    //     ]);
-
-    //     $user = JWTAuth::authenticate($request->token);
-
-    //     return response()->json(['user' => $user]);
-    // }
+    public function tesAuth() {
+        $data = "Welcome " . Auth::user()->name;
+        return response()->json($data, 200);
+    }
 
     // START PROVINCES
     public function getIndexProvinces()
@@ -124,6 +133,7 @@ class ApiController extends Controller
                     'success' => true,
                     'message' => 'Provinsi Berhasil Disimpan!',
                 ], 200);
+                LogActivity::addToLog('Province Created');
             } else {
                 return response()->json([
                     'success' => false,
@@ -136,7 +146,6 @@ class ApiController extends Controller
     public function showProvinces($id)
     {
         $province = Provinces::whereId($id)->first();
-
         if ($province) {
             return response()->json([
                 'success' => true,
@@ -154,7 +163,6 @@ class ApiController extends Controller
 
     public function updateProvinces(Request $request)
     {
-        //validate data
         $validator = Validator::make($request->all(), [
             'province_code'     => 'required',
             'province_name'     => 'required|min:3|max:100'
@@ -181,6 +189,7 @@ class ApiController extends Controller
                     'success' => true,
                     'message' => 'Provinsi Berhasil Diupdate!',
                 ], 200);
+                LogActivity::addToLog('Province Updated');
             } else {
                 return response()->json([
                     'success' => false,
@@ -200,6 +209,7 @@ class ApiController extends Controller
                 'success' => true,
                 'message' => 'Provinsi Berhasil Dihapus!',
             ], 200);
+            LogActivity::addToLog('Province Deleted');
         } else {
             return response()->json([
                 'success' => false,
@@ -250,6 +260,7 @@ class ApiController extends Controller
                     'success' => true,
                     'message' => 'Kota Berhasil Disimpan!',
                 ], 200);
+                LogActivity::addToLog('City Created');
             } else {
                 return response()->json([
                     'success' => false,
@@ -309,6 +320,7 @@ class ApiController extends Controller
                     'success' => true,
                     'message' => 'Kota Berhasil Diupdate!',
                 ], 200);
+                LogActivity::addToLog('City Updated');
             } else {
                 return response()->json([
                     'success' => false,
@@ -328,6 +340,7 @@ class ApiController extends Controller
                 'success' => true,
                 'message' => 'Kota Berhasil Dihapus!',
             ], 200);
+            LogActivity::addToLog('City Deleted');
         } else {
             return response()->json([
                 'success' => false,
@@ -383,6 +396,7 @@ class ApiController extends Controller
                     'success' => true,
                     'message' => 'Area Berhasil Disimpan!',
                 ], 200);
+                LogActivity::addToLog('Area Created');
             } else {
                 return response()->json([
                     'success' => false,
@@ -447,6 +461,7 @@ class ApiController extends Controller
                     'success' => true,
                     'message' => 'Area Berhasil Diupdate!',
                 ], 200);
+                LogActivity::addToLog('Area Updated');
             } else {
                 return response()->json([
                     'success' => false,
@@ -466,6 +481,7 @@ class ApiController extends Controller
                 'success' => true,
                 'message' => 'Area Berhasil Dihapus!',
             ], 200);
+            LogActivity::addToLog('Area Deleted');
         } else {
             return response()->json([
                 'success' => false,

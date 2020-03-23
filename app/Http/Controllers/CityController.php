@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Cities;
+use App\Helpers\LogActivity;
 use App\Provinces;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CityController extends Controller
 {
@@ -46,11 +48,12 @@ class CityController extends Controller
         ]);
 
         Cities::create([
-            'province_code'   => $request->province_id,
+            'province_code'   => $request->province_code,
             'city_code'     => $request->city_code,
             'city_name'     => $request->city_name,
         ]);
 
+        LogActivity::addToLog('City Added');
         return redirect()->route('city.index')->with('success','City Added');
     }
 
@@ -93,6 +96,8 @@ class CityController extends Controller
 
         $city = Cities::findorfail($request->id);
         $city->update($request->all());
+
+        LogActivity::addToLog('City Updated');
         return redirect()->route('city.index')->with('success','City Updated');
     }
 
@@ -107,6 +112,7 @@ class CityController extends Controller
         $city = Cities::find($id);
         $city->delete();
 
+        LogActivity::addToLog('City Deleted');
         return redirect()->back()->with('success','City Deleted');
     }
 }

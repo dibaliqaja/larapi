@@ -105,7 +105,7 @@ aria-hidden="true">
             <input type="hidden" name="id" id="id" value="{{ $hasil->id }}">
             <div class="form-group">
                 <label for="">Province Name</label>
-                <select class="form-control select2" name="province_code" id="">
+                <select class="form-control select" name="province_code" id="province">
                     <option value="" holder>Select Province</option>
                     @foreach ($provinces as $result)
                         <option value="{{ $result->province_code }}">{{ $result->province_name }}</option>
@@ -114,7 +114,7 @@ aria-hidden="true">
             </div>
             <div class="form-group">
                 <label for="">City Name</label>
-                <select class="form-control select2" name="city_code" id="">
+                <select class="form-control select" name="city_code" id="city">
                     <option value="" holder>Select City</option>
                     @foreach ($cities as $result)
                         <option value="{{ $result->city_code }}">{{ $result->city_name }}</option>

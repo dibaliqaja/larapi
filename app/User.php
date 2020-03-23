@@ -5,12 +5,11 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable, LogsActivity;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -20,8 +19,6 @@ class User extends Authenticatable implements JWTSubject
     protected $fillable = [
         'name', 'email', 'password','last_login_at','last_login_ip'
     ];
-
-    protected static $logAttributes = ['name','email','last_login_at','last_login_ip'];
 
     /**
      * The attributes that should be hidden for arrays.

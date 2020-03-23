@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LogActivity;
 use App\Provinces;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ProvincesController extends Controller
 {
@@ -47,6 +47,7 @@ class ProvincesController extends Controller
             'province_name'     => $request->province_name,
         ]);
 
+        LogActivity::addToLog('Province Added');
         return redirect()->route('province.index')->with('success','Province Added');
     }
 
@@ -88,6 +89,8 @@ class ProvincesController extends Controller
 
         $province = Provinces::findorfail($request->id);
         $province->update($request->all());
+
+        LogActivity::addToLog('Province Updated');
         return redirect()->route('province.index')->with('success','Province Updated');
     }
 
@@ -102,6 +105,7 @@ class ProvincesController extends Controller
         $province = Provinces::find($id);
         $province->delete();
 
+        LogActivity::addToLog('Province Deleted');
         return redirect()->back()->with('success','Province Deleted');
     }
 }
